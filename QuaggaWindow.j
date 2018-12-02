@@ -48,7 +48,6 @@
 }
 - (void)stop:(id)sender
 {
-debugger
     Quagga.stop();
 }
 
@@ -67,16 +66,16 @@ var _sharedQuaggaWindow;
     {
 
         _sharedQuaggaWindow = [[QuaggaWindow alloc] initWithContentRect:CGRectMake(0, 0, 500, 500) styleMask:CPTitledWindowMask|CPClosableWindowMask];
-        [_sharedQuaggaWindow setTitle:@"Show me your barcode"];
+        [_sharedQuaggaWindow setTitle:@"Show me your barcodes!"];
         [_sharedQuaggaWindow center];
         var contentView = [_sharedQuaggaWindow contentView];
 
         [contentView setBackgroundColor:[CPColor colorWithWhite:0.95 alpha:1.0]];
 
-        _quaggaView = [[QuaggaView alloc] initWithFrame:CGRectMake(0, 0,498, 480)];
-        [_quaggaView setDelegate:_sharedQuaggaWindow];
+        _sharedQuaggaWindow._quaggaView = [[QuaggaView alloc] initWithFrame:CGRectMake(0, 0,498, 480)];
+        [_sharedQuaggaWindow._quaggaView setDelegate:_sharedQuaggaWindow];
 
-        [contentView addSubview:_quaggaView];
+        [contentView addSubview:_sharedQuaggaWindow._quaggaView];
     }
 
     return _sharedQuaggaWindow;
@@ -84,19 +83,19 @@ var _sharedQuaggaWindow;
 
 - (void)quagga:(id)theQuagga detectedString:(CPString)data
 {
-    [_delegate quagga:theQuagga detectedString:data];
+    [_delegate quaggaWindow:self detectedString:data];
 }
 
-- (void)_windowWillBeAddedToTheDOM
+- (void)start:(id)sender
 {
-    [super _windowWillBeAddedToTheDOM];
-    [_quaggaView start:self]
+    [self orderFront:sender];
+    [_quaggaView start:self];
 }
 
-- (void)_windowWillBeRemovedFromTheDOM
+- (void)close
 {
-    [_quaggaView stop:self]
-    [super _windowWillBeRemovedFromTheDOM];
+    [_quaggaView stop:self];
+    [super close];
 }
 
 @end

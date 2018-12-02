@@ -17,7 +17,7 @@
     [theWindow setDelegate:self];
     [theWindow orderFront:self];
 }
-- (void)quagga:(id)theQuagga detectedString:(CPString)data
+- (void)quaggaWindow:(id)theWindow detectedString:(CPString)data
 {
     alert(data)
 }
